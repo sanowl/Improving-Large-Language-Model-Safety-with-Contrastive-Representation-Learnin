@@ -20,10 +20,10 @@ import os
 from pathlib import Path
 import time
 from collections import defaultdict
-import random
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
+import secrets
 
 # Configure logging
 logging.basicConfig(
@@ -683,7 +683,7 @@ class ContrastiveSafetyTrainer:
         batch_size = harmful_new.shape[0]
         num_adv = int(batch_size * self.config.adversarial_ratio)
         if num_adv > 0:
-            attack_layer = random.choice(self.config.adversarial_layers)
+            attack_layer = secrets.choice(self.config.adversarial_layers)
             harmful_new[:num_adv] = self.defense.apply_defense(
                 harmful_new[:num_adv], attack_layer
             )
@@ -1208,7 +1208,7 @@ if __name__ == "__main__":
     # Set random seeds for reproducibility
     torch.manual_seed(42)
     np.random.seed(42)
-    random.seed(42)
+    secrets.SystemRandom().seed(42)
     
     # Run main CLI
     main()
